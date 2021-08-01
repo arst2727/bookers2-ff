@@ -1,5 +1,5 @@
 <table class='table'>
-  <tr><%= attachment_image_tag(user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
+  <tr><%= attachment_image_tag(user, :profile_image, fallback: "no_image.jpg" ,size: "100x100") %></tr>
   <tr>
 	  <th>name</th>
 	  <th><%= user.name %></th>
@@ -8,8 +8,36 @@
 	  <th>introduction</th>
 	  <th><%= user.introduction %></th>
   </tr>
+  <tr>
+	  <th>follows</th>
+	  <th><%= link_to user.followings.count, "https://e3b9ef21d5e9494597d23c98bb669790.vfs.cloud9.us-east-1.amazonaws.com/users/#{user.id}/followings" %></th>
+  </tr>
+  <tr>
+	  <th>followers</th>
+	  <th><%= link_to user.followers.count, "https://e3b9ef21d5e9494597d23c98bb669790.vfs.cloud9.us-east-1.amazonaws.com/users/#{user.id}/followers" %></th>
+  </tr>
+  <tr>
+    <% if current_user == user %>
+    <!--何もしない-->
+    <% elsif current_user.following?(user) %>
+      <th>
+        <%= link_to user_relationships_path(user.id), method: :delete do %>
+          <button class='btn btn-info'>フォロー外す</button>
+        <% end %>
+      </th>
+      <th></th>
+    <% else %>
+      <th>
+        <%= link_to user_relationships_path(user.id), method: :post do %>
+          <button class='btn btn-success'>フォローする</button>
+        <% end %>
+      </th>
+      <th></th>
+    <% end %>
+  </tr>
 </table>
-
+<% if current_user == user %>
 <div class='row'>
   <%= link_to '',edit_user_path(user),class: "btn btn-outline-secondary btn-block fas fa-user-cog edit_user_#{user.id}" %>
 </div>
+<% end %>
