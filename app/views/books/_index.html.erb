@@ -20,7 +20,7 @@
         <!--tdタグに投稿それぞれ異なるクラスを付与して判別-->
         <td class="bookfav_<%= book.id %>"><%= render "favorites/favorite-btn", book: book, user: current_user %></td>
         
-        <td>コメント数: <%= book.book_comments.count %></td>
+        <td class="comments-count">コメント数: <%= book.book_comments.count %></td>
       </tr>
     <% end %>
   </tbody>
