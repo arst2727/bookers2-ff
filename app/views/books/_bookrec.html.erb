@@ -1,0 +1,87 @@
+<h3>投稿数の前日比・前週比</h3>
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>今日の投稿数</th>
+      <th>前日の投稿数</th>
+      <th>前日比</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <% today_b = user.books.where('created_at > ?', Time.zone.now.beginning_of_day).count %>
+        <% yesterday_b = user.books.where(created_at: 1.day.ago.all_day).count %>
+        <td><%= today_b %></td>
+        <td><%= yesterday_b %></td>
+        <td>
+          <% if yesterday_b!=0 %>
+            <%= ((today_b.to_f/yesterday_b.to_f)*100).to_i %>%
+          <% else %>
+            <%= "NAN" %>
+          <% end %>
+        </td>
+      </tr>
+  </tbody>
+</table>
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>今週の投稿数</th>
+      <th>先週の投稿数</th>
+      <th>前週比</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <% this_week = user.books.where(created_at: 1.week.ago.beginning_of_day..Time.zone.now.end_of_day).count %>
+        <% last_week = user.books.where(created_at: 1.week.ago.all_week).count %>
+        <td><%= this_week %></td>
+        <td><%= last_week %></td>
+        <td>
+          <% if last_week!=0 %>
+            <%= ((this_week.to_f/last_week.to_f)*100).to_i %>%
+          <% else %>
+            <%= "NAN" %>
+          <% end %>
+        </td>
+      </tr>
+  </tbody>
+</table>
+
+<h3>7日間分の投稿数</h3>
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>6日前</th>
+      <% six_ago_b = user.books.where(created_at: 6.day.ago.all_day).count %>
+      <th>5日前</th>
+      <% five_ago_b = user.books.where(created_at: 5.day.ago.all_day).count %>
+      <th>4日前</th>
+      <% four_ago_b = user.books.where(created_at: 4.day.ago.all_day).count %>
+      <th>3日前</th>
+      <% three_ago_b = user.books.where(created_at: 3.day.ago.all_day).count %>
+      <th>2日前</th>
+      <% two_ago_b = user.books.where(created_at: 2.day.ago.all_day).count %>
+      <th>1日前</th>
+      <% yesterday_b = user.books.where(created_at: 1.day.ago.all_day).count %>
+      <th>今日</th>
+      <% today_b =user.books.where('created_at > ?', Time.zone.now.beginning_of_day).count %>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><%= six_ago_b %></td>
+        <td><%= five_ago_b %></td>
+        <td><%= four_ago_b %></td>
+        <td><%= three_ago_b %></td>
+        <td><%= two_ago_b %></td>
+        <td><%= yesterday_b %></td>
+        <td><%= today_b %></td>
+      </tr>
+  </tbody>
+</table>
+<%= line_chart @user_data, title: "7日間の投稿数の比較", label: "投稿した本の数", legend: true%>
+<!--グラフに関して余力があればやりたいこと[1-3]-->
+<!--[1]x軸の表示されている列名をn日前のように指定して表示させる（DBは書き換えない？）-->
+<!--[2]凡例のブロックを塗りつぶしではなく中抜けにさせる-->
+<!--[3]タイトルを小さい文字にする-->

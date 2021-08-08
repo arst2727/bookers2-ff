@@ -6,6 +6,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @books = @user.books
     @book = Book.new
+    @user_data = @books.group_by_day(:created_at, last: 7).count
   end
 
   def index
@@ -23,7 +24,7 @@ class UsersController < ApplicationController
       render "edit"
     end
   end
- 
+
   private
 
   def user_params

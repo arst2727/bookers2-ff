@@ -7,8 +7,13 @@
       <%= render 'books/form', book: @book %>
     </div>
     <div class='col-md-8 offset-md-1'>
+      <!--ユーザ詳細ページでそのユーザが投稿した本一覧-->
       <h2>Books</h2>
       <%= render 'books/index',books: @books %>
+
+      <!--ユーザ詳細ページでそのユーザが投稿した本の数-->
+      <%= render 'books/bookrec',user: @user %>
+
     </div>
   </div>
 </div>
